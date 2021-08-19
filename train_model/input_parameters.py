@@ -22,7 +22,9 @@ model_type = args.model_type
 
 
 os.environ["CUDA_VISIBLE_DEVICES"] = str(gpu_id)
+print('using gpu:', str(gpu_id))
 
+# from global_variables.global_variables import use_cuda
 
 out_dir = args.out_dir
 data_dir = args.data_dir

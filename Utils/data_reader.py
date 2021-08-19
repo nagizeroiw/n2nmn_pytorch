@@ -38,16 +38,22 @@ class BatchLoaderClevr:
         # load one feature map to peek its size
         image_feat_basename = os.path.basename(self.imdb[0]['feature_path'])
         image_feat_name = os.path.join(self.image_feat_dir, image_feat_basename)
+
+        print('image_feat_name', image_feat_name)
         feats = np.load(image_feat_name)
-        #self.feat_H, self.feat_W, self.feat_D = feats.shape[1:]
-        self.feat_D, self.feat_H, self.feat_W = feats.shape[1:]
+        self.feat_H, self.feat_W, self.feat_D = feats.shape[1:]
+        # self.feat_D, self.feat_H, self.feat_W = feats.shape[1:]
+        print('feats.shape (raw, before transpose)', feats.shape)
 
     def load_one_batch(self, sample_ids):
         actual_batch_size = len(sample_ids)
         input_seq_batch = np.zeros((self.T_encoder, actual_batch_size), np.int32)
         seq_length_batch = np.zeros(actual_batch_size, np.int32)
-        #image_feat_batch = np.zeros((actual_batch_size, self.feat_H, self.feat_W, self.feat_D), np.float32)
+        # image_feat_batch = np.zeros((actual_batch_size, self.feat_H, self.feat_W, self.feat_D), np.float32)
         image_feat_batch = np.zeros((actual_batch_size, self.feat_D, self.feat_H, self.feat_W), np.float32)
+        
+        # print('image_feat_batch.shape', image_feat_batch.shape)  # (64, 512, 10, 15)
+        
         image_path_list = [None]*actual_batch_size
         if self.load_answer:
             answer_label_batch = np.zeros(actual_batch_size, np.int32)
@@ -62,7 +68,12 @@ class BatchLoaderClevr:
             seq_length_batch[n] = seq_length
             image_feat_basename = os.path.basename(iminfo['feature_path'])
             image_feat_name = os.path.join(self.image_feat_dir, image_feat_basename)
-            image_feat_batch[n:n+1] = np.load(image_feat_name)
+            
+            # ke: adjust with raw vgg data (1, 10, 15, 512)
+            image_feat_raw = np.load(image_feat_name)
+            image_feat_trans = np.transpose(image_feat_raw, (0, 3, 1, 2))
+
+            image_feat_batch[n:n+1] = image_feat_trans
             if self.load_answer:
                 answer_idx = self.answer_dict.word2idx(iminfo['answer'])
                 answer_label_batch[n] = answer_idx

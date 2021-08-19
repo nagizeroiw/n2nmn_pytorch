@@ -1,7 +1,7 @@
-import torch
+# import torch
 
 
-use_cuda = torch.cuda.is_available()
+use_cuda = True
 
 model_type_gt = "gt_layout"
 model_type_scratch = "scratch"

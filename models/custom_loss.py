@@ -12,7 +12,7 @@ class custom_loss(nn.Module):
         #policy_gradient = torch.mean(policy_gradient_losses)
         #print(" answer= %f, entropy  = %f, policy_gradient = %f" %
         #          (answer,entropy,policy_gradient))
-
+        
         if layout_loss is None:
             return torch.mean(neg_entropy) * self.lambda_entropy +\
                torch.mean(answer_loss)+torch.mean(policy_gradient_losses), answer

@@ -57,10 +57,10 @@ class AttnDecoderRNN(nn.Module):
         self._init_par()
     
     def _init_par(self):
-        torch.nn.init.xavier_uniform(self.decoderLinear.weight)
-        torch.nn.init.xavier_uniform(self.attnLinear.weight)
-        torch.nn.init.constant(self.decoderLinear.bias,0)
-        torch.nn.init.constant(self.attnLinear.bias,0)
+        torch.nn.init.xavier_uniform_(self.decoderLinear.weight)
+        torch.nn.init.xavier_uniform_(self.attnLinear.weight)
+        torch.nn.init.constant_(self.decoderLinear.bias,0)
+        torch.nn.init.constant_(self.attnLinear.bias,0)
     '''
         compute if a token is valid at current sequence
         decoding_state [N,3]
@@ -138,7 +138,7 @@ class AttnDecoderRNN(nn.Module):
         output_transfrom = self.decoderLinear(output_expand)
 
         ##raw_attention size (out_len,seq_len,batch_size,1)
-        raw_attention = self.attnLinear(F.tanh(encoder_transform + output_transfrom)).view(out_len, seq_len,
+        raw_attention = self.attnLinear(torch.tanh(encoder_transform + output_transfrom)).view(out_len, seq_len,
                                                                                            batch_size)  ## Eq2
 
         # (out_len, seq_len, batch_size)==>(batch_size,out_len,seq_len)
@@ -149,7 +149,7 @@ class AttnDecoderRNN(nn.Module):
             mask = np.ones((batch_size, out_len, seq_len))
             for i, v in enumerate(encoder_lens):
                 mask[i, :, 0:v] = 0
-            mask_tensor = torch.ByteTensor(mask)
+            mask_tensor = torch.BoolTensor(mask)
             mask_tensor = mask_tensor.cuda() if use_cuda else mask_tensor
             raw_attention.data.masked_fill_(mask_tensor, -float('inf'))
 
@@ -180,6 +180,7 @@ class AttnDecoderRNN(nn.Module):
 
         ## probs
         probs = output_prob.view(-1,self.output_size)
+        token_invalidity = token_invalidity.bool()
         probs.data.masked_fill_(token_invalidity,0.0)
         probs_sum = torch.sum(probs, dim=1, keepdim=True)
         probs = probs/probs_sum

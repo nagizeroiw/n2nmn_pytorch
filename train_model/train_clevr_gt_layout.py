@@ -34,7 +34,7 @@ num_choices = data_reader_trn.batch_loader.answer_dict.num_vocab
 
 
 criterion_layout = custom_loss(lambda_entropy = lambda_entropy)
-criterion_answer = nn.CrossEntropyLoss(size_average=False,reduce=False)
+criterion_answer = nn.CrossEntropyLoss(reduction='none')
 
 
 if model_type == model_type_gt_rl:
@@ -94,7 +94,7 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
 
     if total_loss is not None:
         total_loss.backward()
-        torch.nn.utils.clip_grad_norm(myModel.parameters(), max_grad_l2_norm)
+        torch.nn.utils.clip_grad_norm_(myModel.parameters(), max_grad_l2_norm)
         myOptimizer.step()
 
     layout_accuracy = np.mean(np.all(predicted_layouts == input_layouts, axis=0))
@@ -108,8 +108,8 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
         print("iter:", i_iter + 1,
               " cur_layout_acc:%.3f"% layout_accuracy, " avg_layout_acc:%.3f"% avg_layout_accuracy,
               " cur_ans_acc:%.4f"% accuracy, " avg_answer_acc:%.4f"% avg_accuracy,
-              "total loss:%.4f"%total_loss.data.cpu().numpy()[0],
-              "avg_answer_loss:%.4f"% avg_answer_loss.data.cpu().numpy()[0])
+              "total loss:%.4f"%total_loss.data.cpu().numpy(),
+              "avg_answer_loss:%.4f"% avg_answer_loss.data.cpu().numpy())
 
         sys.stdout.flush()
 

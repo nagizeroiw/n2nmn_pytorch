@@ -124,18 +124,22 @@ class end2endModuleNet(nn.Module):
                         answer_losses = torch.cat((answer_losses, current_answer_loss))
                         policy_gradient_losses = torch.cat((policy_gradient_losses, current_policy_gradient_loss))
 
-        try:
+        if True:
             if input_answers is not None:
                 total_loss, avg_answer_loss = self.layout_criterion(neg_entropy=neg_entropy,
                                                                             answer_loss=answer_losses,
                                                                             policy_gradient_losses=policy_gradient_losses,
                                                                             layout_loss=layout_loss)
                 ##update layout policy baseline
-                avg_sample_loss = torch.mean(answer_losses)
-                avg_sample_loss_value = avg_sample_loss.cpu().data.numpy()[0]
-                updated_baseline = policy_gradient_baseline + (1 - baseline_decay) * (
-                avg_sample_loss_value - policy_gradient_baseline)
-
+                # print('vag_answer_loss.shape', avg_answer_loss.shape)
+                # avg_sample_loss = torch.mean(answer_losses)
+                # print('avg_sample_loss.shape', avg_sample_loss.shape)
+                # print(avg_sample_loss)
+                # print(avg_answer_loss)
+                avg_sample_loss_value = avg_answer_loss.cpu().data.numpy()
+                # print('avg_sample_loss_value', avg_sample_loss_value)
+                updated_baseline = policy_gradient_baseline + (1 - baseline_decay) * (avg_sample_loss_value - policy_gradient_baseline)
+        '''
         except:
             print("sample_group = ", sample_group)
             print("neg_entropy=", neg_entropy)
@@ -144,10 +148,7 @@ class end2endModuleNet(nn.Module):
             print("layout_loss=", layout_loss)
             sys.stdout.flush()
             sys.exit("Exception Occur")
-
-                    
-        
-            
+        ''' 
 
         return total_loss, avg_answer_loss, current_answer, predicted_layouts, expr_validity_array, updated_baseline
 

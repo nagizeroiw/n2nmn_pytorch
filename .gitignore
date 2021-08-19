@@ -5,3 +5,4 @@ test_helper/*
 exp_clevr/*
 .idea/*
 */__pycache__/*
+output/*
