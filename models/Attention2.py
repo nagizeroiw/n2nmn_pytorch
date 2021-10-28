@@ -189,7 +189,7 @@ class AttnDecoderRNN(nn.Module):
         if target_variable is not None:
             predicted_token = target_variable[time, :].view(-1,1)
         elif sample_token:
-            predicted_token = probs.multinomial()
+            predicted_token = probs.multinomial(num_samples=1)
         else:
             predicted_token = torch.max(probs, dim=1)[1].view(-1, 1)
 

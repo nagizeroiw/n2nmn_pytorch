@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function
-from eval_model.layout_evaluator import run_eval
 import argparse
-
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--gpu_id', type=int, default=0)
@@ -15,6 +14,11 @@ parser.add_argument("--model_dir",type=str, required=True)
 
 args = parser.parse_args()
 
+# set CUDA_VISIBLE_DEVICES before import torch
+os.environ["CUDA_VISIBLE_DEVICES"] = str(args.gpu_id)
+print('using gpu:', str(args.gpu_id))
+
+from eval_model.layout_evaluator import run_eval
 
 exp_name = args.exp_name
 snapshot_name = args.snapshot_name

@@ -1,0 +1,8 @@
+iter: 1 	layout_accuracy: 0.9978865398590582 	correct_total: 149674 	num_questions_total 149991 	answer_accuracy 0.6028228360368288
+iter: 2 	layout_accuracy: 0.9994066310645305 	correct_total: 149902 	num_questions_total 149991 	answer_accuracy 0.6971684967764733
+iter: 3 	layout_accuracy: 0.9996199771986319 	correct_total: 149934 	num_questions_total 149991 	answer_accuracy 0.7495316385649806
+iter: 4 	layout_accuracy: 0.9999466634664747 	correct_total: 149983 	num_questions_total 149991 	answer_accuracy 0.7938009613910167
+iter: 5 	layout_accuracy: 0.9997599855991359 	correct_total: 149955 	num_questions_total 149991 	answer_accuracy 0.8035348787593922
+iter: 6 	layout_accuracy: 0.9999066610663306 	correct_total: 149977 	num_questions_total 149991 	answer_accuracy 0.8110286617197032
+iter: 7 	layout_accuracy: 0.9999666646665467 	correct_total: 149986 	num_questions_total 149991 	answer_accuracy 0.8132754631944583
+iter: 8 	layout_accuracy: 0.9998133221326613 	correct_total: 149963 	num_questions_total 149991 	answer_accuracy 0.8174423798761259

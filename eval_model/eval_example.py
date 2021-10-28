@@ -17,16 +17,16 @@ from eval_model.layout_evaluator import run_eval
 
 
 # Data files
-vocab_question_file = './exp_clevr/data/vocabulary_clevr.txt'
-vocab_layout_file = './exp_clevr/data/vocabulary_layout.txt'
-vocab_answer_file = './exp_clevr/data/answers_clevr.txt'
+vocab_question_file = './data/data/vocabulary_clevr.txt'
+vocab_layout_file = './data/data/vocabulary_layout.txt'
+vocab_answer_file = './data/data/answers_clevr.txt'
 
 
-exp_name = 'clevr_gt_layout'
+exp_name = 'rl_gt_'
 tst_image_set = 'val'
 out_file = "layout_learning_on_eval_dataset.txt"
 
-snapshot_name='%08d' % 500
+snapshot_name='model_00080000'
 
 T_encoder = 45
 T_decoder = 20
@@ -35,13 +35,13 @@ prune_filter_module = True
 
 
 
-imdb_file_tst = './exp_clevr/data/imdb/imdb_%s.npy' % tst_image_set
-snapshot_file = './exp_clevr/tfmodel/%s/%s' % (exp_name, snapshot_name)
+imdb_file_tst = './data/data/imdb/imdb_%s.npy' % tst_image_set
+snapshot_file = './data/tfmodel/%s/%s' % (exp_name, snapshot_name)
 
-save_file = './exp_clevr/results/%s/%s.%s.txt' % (exp_name, snapshot_name, tst_image_set)
+save_file = './save_%s_%s_%s.txt' % (exp_name, snapshot_name, tst_image_set)
 os.makedirs(os.path.dirname(save_file), exist_ok=True)
 
-eval_output_file = './exp_clevr/eval_outputs/%s/%s.%s.txt' % (exp_name, snapshot_name, tst_image_set)
+eval_output_file = './eval_%s_%s_%s.txt' % (exp_name, snapshot_name, tst_image_set)
 os.makedirs(os.path.dirname(eval_output_file), exist_ok=True)
 
 assembler = Assembler(vocab_layout_file)
@@ -86,8 +86,7 @@ myLayouts, myAttentions = model(input_variable, input_text_seq_lens, target_vari
 predicted_layouts = torch.topk(myLayouts, 1)[1].cpu().data.numpy()[:, :, 0]
 
 
-sample_idx = 17
-
+# sample_idx = 17
 
 
 def plot_sample(sample_idx):

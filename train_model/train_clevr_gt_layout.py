@@ -79,10 +79,7 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
         input_layout_variable = Variable(torch.LongTensor(input_layouts))
         input_layout_variable = input_layout_variable.cuda() if use_cuda else input_layout_variable
 
-
-
-
-    
+ 
     myOptimizer.zero_grad()
 
     total_loss,avg_answer_loss ,myAnswer, predicted_layouts, expr_validity_array, updated_baseline \
@@ -105,7 +102,7 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
     validity = np.mean(expr_validity_array)
 
     if (i_iter + 1) % 20 == 0 :
-        print("iter:", i_iter + 1,
+        print("[train] iter:", i_iter + 1,
               " cur_layout_acc:%.3f"% layout_accuracy, " avg_layout_acc:%.3f"% avg_layout_accuracy,
               " cur_ans_acc:%.4f"% accuracy, " avg_answer_acc:%.4f"% avg_accuracy,
               "total loss:%.4f"%total_loss.data.cpu().numpy(),
@@ -117,7 +114,7 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
     if  (i_iter + 1) % snapshot_interval == 0 or (i_iter + 1) == max_iter:
         model_snapshot_file = os.path.join(snapshot_dir, "model_%08d" % (i_iter + 1))
         torch.save(myModel, model_snapshot_file)
-        print('snapshot saved to ' + model_snapshot_file )
+        print('[train] snapshot saved to ' + model_snapshot_file )
         sys.stdout.flush()
 
 

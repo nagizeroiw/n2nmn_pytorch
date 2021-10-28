@@ -12,7 +12,7 @@ from global_variables.global_variables import use_cuda
 
 T_encoder = 45
 T_decoder = 10
-N = 64
+N = 128
 prune_filter_module = True
 
 
@@ -44,7 +44,7 @@ def run_eval(exp_name, snapshot_name, tst_image_set, data_dir, image_feat_dir, t
 
 
     if data_reader_tst is not None:
-        print('Running test ...')
+        print('[run_eval] Running test ...')
 
 
         answer_correct_total = 0
@@ -94,10 +94,9 @@ def run_eval(exp_name, snapshot_name, tst_image_set, data_dir, image_feat_dir, t
             layout_validity = layout_valid_total / num_questions_total
 
             if (i+1)%100 ==0 and print_log:
-                print("iter:", i + 1, " layout_accuracy=%.4f"% layout_accuracy,
+                print("[run_eval] iter:", i + 1, " layout_accuracy=%.4f"% layout_accuracy,
                       " answer_accuracy=%.4f"% answer_accuracy,
                       " layout_validity=%.4f"% layout_validity,)
 
 
-
-        return layout_accuracy, layout_correct_total ,num_questions_total, answer_accuracy
+    return layout_accuracy, layout_correct_total, num_questions_total, answer_accuracy

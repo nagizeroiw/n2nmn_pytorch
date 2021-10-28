@@ -108,10 +108,10 @@ for i_iter, batch in enumerate(data_reader_trn.batches()):
     input_images = batch['image_feat_batch']
     input_answers = batch['answer_label_batch']
 
-    np.savetxt("/private/home/tinayujiang/temp/temp_out/input_text_seqs.txt",input_text_seqs)
-    np.savetxt("/private/home/tinayujiang/temp/temp_out/input_layouts.txt", input_layouts)
-    #np.savetxt("/private/home/tinayujiang/temp/temp_out/input_images.txt", input_images[0,:,:])
-    np.savetxt("/private/home/tinayujiang/temp/temp_out/input_answers.txt", input_answers)
+    #  np.savetxt("/private/home/tinayujiang/temp/temp_out/input_text_seqs.txt",input_text_seqs)
+    # np.savetxt("/private/home/tinayujiang/temp/temp_out/input_layouts.txt", input_layouts)
+    # np.savetxt("/private/home/tinayujiang/temp/temp_out/input_images.txt", input_images[0,:,:])
+    # np.savetxt("/private/home/tinayujiang/temp/temp_out/input_answers.txt", input_answers)
 
 
 

@@ -25,7 +25,7 @@ class BatchLoaderClevr:
         # the answer dict is always loaded, regardless of self.load_answer
         self.answer_dict = text_processing.VocabDict(data_params['vocab_answer_file'])
         if not self.load_answer:
-            print('imdb does not contain answers')
+            print('[data_reader::BatchLoaderClevr] ! imdb does not contain answers')
         if self.load_gt_layout:
             self.T_decoder = data_params['T_decoder']
             self.assembler = data_params['assembler']
@@ -33,17 +33,17 @@ class BatchLoaderClevr:
                                         if 'prune_filter_module' in data_params
                                         else False)
         else:
-            print('imdb does not contain ground-truth layout')
+            print('[data_reader::BatchLoaderClevr] ! imdb does not contain ground-truth layout')
 
         # load one feature map to peek its size
         image_feat_basename = os.path.basename(self.imdb[0]['feature_path'])
         image_feat_name = os.path.join(self.image_feat_dir, image_feat_basename)
 
-        print('image_feat_name', image_feat_name)
+        print('[data_reader::BatchLoaderClevr] image_feat_name', image_feat_name)
         feats = np.load(image_feat_name)
         self.feat_H, self.feat_W, self.feat_D = feats.shape[1:]
         # self.feat_D, self.feat_H, self.feat_W = feats.shape[1:]
-        print('feats.shape (raw, before transpose)', feats.shape)
+        print('[data_reader::BatchLoaderClevr] feats.shape (raw, before transpose)', feats.shape)
 
     def load_one_batch(self, sample_ids):
         actual_batch_size = len(sample_ids)
@@ -100,7 +100,7 @@ class BatchLoaderClevr:
 
 class DataReader:
     def __init__(self, imdb_file, image_feat_dir, shuffle=True, one_pass=False, prefetch_num=8, **kwargs):
-        print('Loading imdb from file...', end=''); sys.stdout.flush()
+        print('[data_reader::BatchLoaderClevr] Loading imdb from file...', end=''); sys.stdout.flush()
         if imdb_file.endswith('.npy'):
             imdb = np.load(imdb_file)
         else:
@@ -132,7 +132,7 @@ class DataReader:
             batch = self.prefetch_queue.get(block=True)
             if batch is None:
                 assert(self.one_pass)
-                print('data reader: one pass finished')
+                print('[data_reader::BatchLoaderClevr] data reader: one pass finished')
                 raise StopIteration()
             yield batch
 
