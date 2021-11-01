@@ -6,4 +6,5 @@ exp_clevr/*
 .idea/*
 */__pycache__/*
 output/*
+output/tfmodel/*
 data/*
