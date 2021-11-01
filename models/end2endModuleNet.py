@@ -5,7 +5,7 @@ from models.Attention2 import *
 from models.module_net import *
 from Utils.utils import unique_columns
 
-
+use_cuda = torch.cuda.is_available()
 
 
 class end2endModuleNet(nn.Module):
@@ -41,6 +41,9 @@ class end2endModuleNet(nn.Module):
         ##initiate moduleNet
         myModuleNet = module_net(image_height=image_height, image_width=image_width, in_image_dim=in_image_dim,
                                  in_text_dim=embed_dim_txt, out_num_choices=out_num_choices, map_dim=hidden_size)
+
+        if use_cuda:
+            print('[end2endModuleNet:__init__] use_cuda: True')
 
         self.myModuleNet = myModuleNet.cuda() if use_cuda else myModuleNet
 
